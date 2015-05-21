@@ -1,0 +1,6 @@
+[submodule "libforestdb-sys/forestdb"]
+	path = libforestdb-sys/forestdb
+	url = https://github.com/couchbase/forestdb.git
+[submodule "forestdb-sys/forestdb"]
+	path = forestdb-sys/forestdb
+	url = https://github.com/couchbase/forestdb.git

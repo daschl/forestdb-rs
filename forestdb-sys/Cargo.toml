@@ -1,0 +1,13 @@
+[package]
+name = "forestdb-sys"
+version = "0.1.0"
+authors = ["Michael Nitschinger <michael@nitschinger.at>"]
+build = "build.rs"
+links = "forestdb"
+
+[lib]
+name = "forestdb_sys"
+path = "lib.rs"
+
+[dependencies]
+libc = "0.1"
