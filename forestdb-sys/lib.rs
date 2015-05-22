@@ -1,9 +1,20 @@
+/**
+you can make it a #[repr(u8)] enum but then rustc should complain in a lint that you're using non-repr C types in ffi
+12:28 but the correct type here is uint8_t for sure
+Dtgr
+12:29 I agree
+bluss
+12:29 fwiw, the C code is great in defining explicit size struct members instead of relying on the implementation defined size of enum
+12:30 it makes it easier for everyone
+*/
+
 extern crate libc;
 
 use libc::{c_void, size_t, uint8_t, uint16_t, uint32_t, uint64_t};
 
-#[repr(C)]
+#[repr(u8)]
 #[derive(Debug,PartialEq)]
+#[allow(non_snake_case)]
 pub enum fdb_seqtree_opt_t {
 	FDB_SEQTREE_NOT_USE = 0,
 	FDB_SEQTREE_USE = 1
@@ -53,11 +64,7 @@ fn should_access_default_config() {
 		assert_eq!(true, cfg.wal_flush_before_commit);
 		assert_eq!(false, cfg.auto_commit);
 		assert_eq!(0, cfg.purging_interval);
-
-		println!("{}", fdb_seqtree_opt_t::FDB_SEQTREE_USE as u8);
-		println!("{}", cfg.seqtree_opt as u8);
-
-		//assert_eq!(fdb_seqtree_opt_t::FDB_SEQTREE_USE, cfg.seqtree_opt);
+		assert_eq!(fdb_seqtree_opt_t::FDB_SEQTREE_USE, cfg.seqtree_opt);
 		assert_eq!(0, cfg.durability_opt);
 		assert_eq!(1, cfg.flags);
 		assert_eq!(4194304, cfg.compaction_buf_maxsize);
