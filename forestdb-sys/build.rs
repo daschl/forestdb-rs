@@ -16,7 +16,7 @@ fn main() {
 	 run(Command::new("cp").arg("-r").arg("forestdb/build").arg(dst), "mv");
 
 	 println!("cargo:rustc-link-lib=dylib=forestdb");
-	 println!("cargo:rustc-link-search=all={}", &env::var("OUT_DIR").unwrap());
+	 //println!("cargo:rustc-link-search=all={}", &env::var("OUT_DIR").unwrap());
 }
 
 fn run(cmd: &mut Command, program: &str) {
