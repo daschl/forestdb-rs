@@ -3,11 +3,10 @@ extern crate libc;
 use libc::{c_void, size_t, uint8_t, uint16_t, uint32_t, uint64_t};
 
 #[repr(C)]
-#[derive(Debug)]
-#[derive(PartialEq)] 
+#[derive(Debug,PartialEq)]
 pub enum fdb_seqtree_opt_t {
-	FDB_SEQTREE_NOT_USE(uint8_t),
-	FDB_SEQTREE_USE(uint8_t)
+	FDB_SEQTREE_NOT_USE = 0,
+	FDB_SEQTREE_USE = 1
 }
 
 #[repr(C)]
@@ -55,8 +54,10 @@ fn should_access_default_config() {
 		assert_eq!(false, cfg.auto_commit);
 		assert_eq!(0, cfg.purging_interval);
 
-		// TODO: add back assert for seqtree_opt
+		println!("{}", fdb_seqtree_opt_t::FDB_SEQTREE_USE as u8);
+		println!("{}", cfg.seqtree_opt as u8);
 
+		//assert_eq!(fdb_seqtree_opt_t::FDB_SEQTREE_USE, cfg.seqtree_opt);
 		assert_eq!(0, cfg.durability_opt);
 		assert_eq!(1, cfg.flags);
 		assert_eq!(4194304, cfg.compaction_buf_maxsize);
