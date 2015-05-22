@@ -1,27 +1,16 @@
-/**
-you can make it a #[repr(u8)] enum but then rustc should complain in a lint that you're using non-repr C types in ffi
-12:28 but the correct type here is uint8_t for sure
-Dtgr
-12:29 I agree
-bluss
-12:29 fwiw, the C code is great in defining explicit size struct members instead of relying on the implementation defined size of enum
-12:30 it makes it easier for everyone
-*/
-
 extern crate libc;
 
 use libc::{c_void, size_t, uint8_t, uint16_t, uint32_t, uint64_t};
 
 #[repr(u8)]
 #[derive(Debug,PartialEq)]
-#[allow(non_snake_case)]
-pub enum fdb_seqtree_opt_t {
-	FDB_SEQTREE_NOT_USE = 0,
-	FDB_SEQTREE_USE = 1
+pub enum FdbSeqtreeOptT {
+	FdbSeqtreeNotUse = 0,
+	FdbSeqtreeUse = 1
 }
 
 #[repr(C)]
-pub struct fdb_config {
+pub struct FdbConfig {
 	chunksize: uint16_t,
 	blocksize: uint32_t,
 	buffercache_size: uint64_t,
@@ -29,7 +18,7 @@ pub struct fdb_config {
 	wal_flush_before_commit: bool,
 	auto_commit: bool,
 	purging_interval: uint32_t,
-	seqtree_opt: fdb_seqtree_opt_t,
+	seqtree_opt: FdbSeqtreeOptT,
 	durability_opt: uint8_t,
 	flags: uint32_t,
 	compaction_buf_maxsize: uint32_t,
@@ -50,7 +39,7 @@ pub struct fdb_config {
 }
 
 extern {
-	pub fn fdb_get_default_config() -> fdb_config;
+	pub fn fdb_get_default_config() -> FdbConfig;
 }
 
 #[test]
@@ -64,7 +53,7 @@ fn should_access_default_config() {
 		assert_eq!(true, cfg.wal_flush_before_commit);
 		assert_eq!(false, cfg.auto_commit);
 		assert_eq!(0, cfg.purging_interval);
-		assert_eq!(fdb_seqtree_opt_t::FDB_SEQTREE_USE, cfg.seqtree_opt);
+		assert_eq!(FdbSeqtreeOptT::FdbSeqtreeUse, cfg.seqtree_opt);
 		assert_eq!(0, cfg.durability_opt);
 		assert_eq!(1, cfg.flags);
 		assert_eq!(4194304, cfg.compaction_buf_maxsize);
